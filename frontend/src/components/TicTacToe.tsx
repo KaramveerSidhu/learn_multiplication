@@ -71,6 +71,7 @@ const TicTacToe = () => {
   };
 
   const handleReset = () => {
+    // @ts-ignore
     setWinner();
     setIsDraw(false);
     setCells(Array(9).fill(""));
@@ -100,9 +101,10 @@ const TicTacToe = () => {
           </tr>
         </tbody>
       </table>
-      <button className="reset-button" onClick={handleReset}>
-        Reset
-      </button>
+
+      <h1 className="">
+      Hello world!
+    </h1>
     </div>
   );
 }
