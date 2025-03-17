@@ -42,15 +42,4 @@
   
   .TicTacToe__container .reset-button {
     margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 18px;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .TicTacToe__container .reset-button:hover {
-    background-color: #0056b3;
   }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./TicTacToe.css";
+import { Button } from '@chakra-ui/react'
 
 const Cell = ({ num, onClick: onCellClick, cells }) => {
     const cellValue = cells[num];
@@ -100,9 +101,9 @@ const TicTacToe = () => {
           </tr>
         </tbody>
       </table>
-      <button className="reset-button" onClick={handleReset}>
-        Reset
-      </button>
+
+      
+      <Button className="reset-button" colorScheme="teal" onClick={handleReset} size="lg">Reset</Button>
     </div>
   );
 }
