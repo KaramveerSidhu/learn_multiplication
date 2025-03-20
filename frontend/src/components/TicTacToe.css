@@ -4,6 +4,11 @@
     align-items: center;
     justify-content: center;
   }
+
+  .TicTacToe__loader {
+    width: 300.8px;
+    height: 300.8px;
+  }
   
   table td {
     border: 1px solid grey;
@@ -42,4 +47,38 @@
   
   .TicTacToe__container .reset-button {
     margin-top: 20px;
+  }
+
+  .TicTacToe__container .question-display {
+    font-size: 16px;
+  }
+
+  .Modal__question-display {
+    font-size: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .Modal__question-display input {
+    width: 100px;
+    height: 80px;
+    font-size: 48px;
+    text-align: center;
+  }
+
+  .Modal__learningbtns {
+    margin-top: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .Modal__ansbtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
