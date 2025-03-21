@@ -16,6 +16,7 @@ import {
 
 import { useToast } from "@chakra-ui/react";
 import VisualLearningModal from "./VisualLearningModal";
+import AdditionMethodModal from "./AdditionMethodModal";
 
 const Cell = ({ num, onClick: onCellClick, cells, question }) => {
   const cellValue = cells[num];
@@ -54,6 +55,9 @@ const TicTacToe = () => {
     isOpen: isVisualModalOpen,
     onOpen: onVisualModalOpen,
     onClose: onVisualModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: isAddModalOpen, onOpen: onAddModalOpen, onClose: onAddModalClose
   } = useDisclosure();
 
   const toast = useToast();
@@ -167,6 +171,11 @@ const TicTacToe = () => {
   const handleVisualModalOpen = () => {
     onVisualModalOpen();
   };
+
+  const handleAddModalOpen = () => {
+    onAddModalOpen();
+  };
+
 
   const fetchQuestions = async () => {
     try {
@@ -313,7 +322,7 @@ const TicTacToe = () => {
               >
                 Visual Learning
               </Button>
-              <Button colorScheme="pink" variant={"outline"}>
+              <Button colorScheme="pink" variant={"outline"} onClick={handleAddModalOpen}>
                 Addition Method
               </Button>
             </div>
@@ -327,6 +336,14 @@ const TicTacToe = () => {
         onClose={onVisualModalClose}
         num1={modalInfo.num1}
         num2={modalInfo.num2}
+      />
+
+      <AdditionMethodModal 
+        isOpen={isAddModalOpen}
+        onOpen={onAddModalOpen}
+        onClose={onAddModalClose}
+        num1={modalInfo.num1}
+        num2={modalInfo.num2} 
       />
     </div>
   );

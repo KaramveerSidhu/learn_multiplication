@@ -20,34 +20,34 @@ const VisualLearningModal = ({ isOpen, onOpen, onClose, num1, num2 }) => {
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />
-        <ModalBody className="VisualLearningModalModal__container">
-          <div className="VisualLearningModalModal">
-            <div className="VisualLearningModalModal__question-display">
+        <ModalBody className="VisualLearningModal__container">
+          <div className="VisualLearningModal">
+            <div className="VisualLearningModal__question-display">
               {`${num1} X ${num2}`}
             </div>
 
-            <div className="VisualLearningModalModal__top">
-              <div className="VisualLearningModalModal__block VisualLearningModalModal__hidden-block">
-                {" "}
+            <div className="VisualLearningModal__top">
+              <div className="VisualLearningModal__block VisualLearningModal__hidden-block">
+                
               </div>
-              <div className="VisualLearningModalModal__parentBlockRow">
-                {" "}
+              <div className="VisualLearningModal__parentBlockRow">
+                
                 {new Array(num2).fill("").map(() => {
                   return (
-                    <div className="VisualLearningModalModal__block"></div>
+                    <div className="VisualLearningModal__block"></div>
                   );
-                })}{" "}
+                })}
               </div>
             </div>
 
-            <div className="VisualLearningModalModal__parentMain">
-              <div className="VisualLearningModalModal__parentBlockCol">
-                {" "}
-                {new Array(num2).fill("").map(() => {
+            <div className="VisualLearningModal__parentMain">
+              <div className="VisualLearningModal__parentBlockCol">
+                
+                {new Array(num1).fill("").map(() => {
                   return (
-                    <div className="VisualLearningModalModal__block"></div>
+                    <div className="VisualLearningModal__block"></div>
                   );
-                })}{" "}
+                })}
               </div>
 
               <div>
@@ -56,16 +56,16 @@ const VisualLearningModal = ({ isOpen, onOpen, onClose, num1, num2 }) => {
                     <div
                       className={`${
                         idx === 0
-                          ? "VisualLearningModalModal__parentBlockRow VisualLearningModalModal__parentBlockRowMain VisualLearningModalModal__parentBlockRowFirst"
-                          : "VisualLearningModalModal__parentBlockRow VisualLearningModalModal__parentBlockRowMain"
+                          ? "VisualLearningModal__parentBlockRow VisualLearningModal__parentBlockRowMain VisualLearningModal__parentBlockRowFirst"
+                          : "VisualLearningModal__parentBlockRow VisualLearningModal__parentBlockRowMain"
                       }`}
                     >
-                      {" "}
+                      
                       {new Array(num2).fill("").map(() => {
                         return (
-                          <div className="VisualLearningModalModal__block"></div>
+                          <div className="VisualLearningModal__block"></div>
                         );
-                      })}{" "}
+                      })}
                     </div>
                   );
                 })}

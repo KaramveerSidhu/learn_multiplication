@@ -1,4 +1,4 @@
-.VisualLearningModalModal__container {
+.VisualLearningModal__container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,7 +6,7 @@
   height: 100%;
 }
 
-.VisualLearningModalModal {
+.VisualLearningModal {
   padding: 64px;
   width: max-content;
   height: max-content;
@@ -14,7 +14,7 @@
   flex-direction: column;
 }
 
-.VisualLearningModalModal__question-display {
+.VisualLearningModal__question-display {
   font-size: 48px;
   display: flex;
   align-items: center;
@@ -22,26 +22,26 @@
   margin-bottom: 24px;
 }
 
-.VisualLearningModalModal__block {
+.VisualLearningModal__block {
   width: 30px;
   height: 30px;
   border: 1px solid black;
   flex-shrink: 0;
 }
 
-.VisualLearningModalModal__parentBlockCol .VisualLearningModalModal__block {
+.VisualLearningModal__parentBlockCol .VisualLearningModal__block {
   background: crimson;
 }
 
-.VisualLearningModalModal__parentBlockRow  .VisualLearningModalModal__block {
+.VisualLearningModal__parentBlockRow  .VisualLearningModal__block {
   background: purple;
 }
 
-.VisualLearningModalModal__parentBlockRowMain  .VisualLearningModalModal__block {
+.VisualLearningModal__parentBlockRowMain  .VisualLearningModal__block {
   background: teal;
 }
 
-.VisualLearningModalModal__parentBlockRow {
+.VisualLearningModal__parentBlockRow {
   display: flex;
   gap: 16px;
   border-left: 1px solid black;
@@ -49,21 +49,21 @@
   padding-bottom: 16px;
 }
 
-.VisualLearningModalModal__parentBlockRowMain {
+.VisualLearningModal__parentBlockRowMain {
   border-left: none;
   padding-left: 0;
   
 }
 
-.VisualLearningModalModal__parentBlockRowFirst {
+.VisualLearningModal__parentBlockRowFirst {
   padding-top: 16px;
 }
 
-.VisualLearningModalModal__hidden-block {
+.VisualLearningModal__hidden-block {
   border: none
 }
 
-.VisualLearningModalModal__parentBlockCol {
+.VisualLearningModal__parentBlockCol {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -74,12 +74,12 @@
 
  
 
-.VisualLearningModalModal__parentMain {
+.VisualLearningModal__parentMain {
   display: flex;
   gap: 16px;
 }
 
-.VisualLearningModalModal__top {
+.VisualLearningModal__top {
   display: flex;
   gap: 16px;
   border-bottom: 1px solid black;
