@@ -182,8 +182,10 @@ const TicTacToe = () => {
       if (isError) setIsError(false);
       if (!isLoading) setIsLoading(true);
 
+      console.log("SERVER", process.env.REACT_APP_API_SERVER)
+
       const response = await fetch(
-        "http://127.0.0.1:8000/api/generate-questions/"
+        `${process.env.REACT_APP_API_SERVER}/api/generate-questions/`
       );
       const data = await response.json();
 
