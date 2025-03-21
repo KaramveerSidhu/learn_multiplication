@@ -1,0 +1,88 @@
+.VisualLearningModalModal__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.VisualLearningModalModal {
+  padding: 64px;
+  width: max-content;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+}
+
+.VisualLearningModalModal__question-display {
+  font-size: 48px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.VisualLearningModalModal__block {
+  width: 30px;
+  height: 30px;
+  border: 1px solid black;
+  flex-shrink: 0;
+}
+
+.VisualLearningModalModal__parentBlockCol .VisualLearningModalModal__block {
+  background: crimson;
+}
+
+.VisualLearningModalModal__parentBlockRow  .VisualLearningModalModal__block {
+  background: purple;
+}
+
+.VisualLearningModalModal__parentBlockRowMain  .VisualLearningModalModal__block {
+  background: teal;
+}
+
+.VisualLearningModalModal__parentBlockRow {
+  display: flex;
+  gap: 16px;
+  border-left: 1px solid black;
+  padding-left: 16px;
+  padding-bottom: 16px;
+}
+
+.VisualLearningModalModal__parentBlockRowMain {
+  border-left: none;
+  padding-left: 0;
+  
+}
+
+.VisualLearningModalModal__parentBlockRowFirst {
+  padding-top: 16px;
+}
+
+.VisualLearningModalModal__hidden-block {
+  border: none
+}
+
+.VisualLearningModalModal__parentBlockCol {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-right: 1px solid black;
+  padding-right: 16px;
+  padding-top: 16px;
+}
+
+ 
+
+.VisualLearningModalModal__parentMain {
+  display: flex;
+  gap: 16px;
+}
+
+.VisualLearningModalModal__top {
+  display: flex;
+  gap: 16px;
+  border-bottom: 1px solid black;
+}
+
+
