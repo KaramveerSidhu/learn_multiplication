@@ -16,7 +16,7 @@ const AdditionMethodModal = ({ isOpen, onOpen, onClose, num1, num2 }) => {
   };
 
   return (
-    <Modal size={"3xl"} isOpen={isOpen} onClose={handleModalClose}>
+    <Modal size={"5xl"} isOpen={isOpen} onClose={handleModalClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />
