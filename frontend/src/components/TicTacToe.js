@@ -19,6 +19,8 @@ import VisualLearningModal from "./VisualLearningModal";
 import AdditionMethodModal from "./AdditionMethodModal";
 import Speaker from "./Speaker";
 
+import { parseSpeechToNumber } from "./helpers";
+
 const Cell = ({ num, onClick: onCellClick, cells, question }) => {
   const cellValue = cells[num];
   const cellClassName = cellValue ? `cell cell-${cellValue}` : "cell";
@@ -51,6 +53,7 @@ const TicTacToe = () => {
   const [modalInfo, setModalInfo] = useState({});
   const [currAns, setCurrAns] = useState("");
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [isListening, setIsListening] = useState(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -59,7 +62,9 @@ const TicTacToe = () => {
     onClose: onVisualModalClose,
   } = useDisclosure();
   const {
-    isOpen: isAddModalOpen, onOpen: onAddModalOpen, onClose: onAddModalClose
+    isOpen: isAddModalOpen,
+    onOpen: onAddModalOpen,
+    onClose: onAddModalClose,
   } = useDisclosure();
 
   const toast = useToast();
@@ -69,7 +74,8 @@ const TicTacToe = () => {
   const btnSound = useRef(new Audio("/sounds/button.mp3"));
   const successSound = useRef(new Audio("/sounds/success.mp3"));
   const errorSound = useRef(new Audio("/sounds/error.mp3"));
-  const backgroundMusic = useRef(new Audio("/sounds/background.mp3"))
+  const backgroundMusic = useRef(new Audio("/sounds/background.mp3"));
+  const celebrateSound = useRef(new Audio("/sounds/celebrate.mp3"));
 
   const checkwinner = (arr) => {
     let combos = {
@@ -100,6 +106,7 @@ const TicTacToe = () => {
           arr[pattern[1]] === arr[pattern[2]]
         ) {
           setWinner(arr[pattern[0]]);
+          celebrateSound.current.play();
         }
       });
     }
@@ -112,6 +119,7 @@ const TicTacToe = () => {
 
     setModalInfo({ cellNum, num1, num2 });
     onOpen();
+    speakQuestion(num1, num2);
   };
 
   const handleCellClaim = (cellNum) => {
@@ -180,6 +188,7 @@ const TicTacToe = () => {
   const handleModalClose = () => {
     onClose();
     setCurrAns("");
+    window.speechSynthesis.cancel();
   };
 
   const handleVisualModalOpen = () => {
@@ -192,6 +201,73 @@ const TicTacToe = () => {
     onAddModalOpen();
   };
 
+  const speakQuestion = (num1, num2) => {
+    if (!window.speechSynthesis) {
+      console.error("Speech Synthesis API is not supported in this browser.");
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(
+      `What is ${num1} times ${num2}?`
+    );
+    utterance.lang = "en-US";
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const startListening = () => {
+    if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
+      console.error("Speech Recognition API is not supported in this browser.");
+      return;
+    }
+
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = "en-US"; // Set language
+    recognition.interimResults = false; // Only final results
+    recognition.maxAlternatives = 1; // Only one result
+
+    recognition.onstart = () => {
+      setIsListening(true);
+    };
+
+    recognition.onresult = (event) => {
+      const speechResult = event.results[0][0].transcript;
+      console.log("Raw speech result:", speechResult);
+
+      const number = parseSpeechToNumber(speechResult, toast);
+      if (isNaN(number)) {
+        console.error("Invalid input: Could not parse a number.");
+        toast({
+          title: "Invalid Input",
+          description: "Please say a valid number.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
+      } else {
+        setCurrAns(number);
+        handleSubmitAns(modalInfo.num1, modalInfo.num2, number);
+      }
+
+      setIsListening(false);
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.start(); // Start listening
+  };
 
   const fetchQuestions = async () => {
     try {
@@ -230,11 +306,12 @@ const TicTacToe = () => {
   }, []);
 
   useEffect(() => {
-    resetSound.current.load()
-    cellSound.current.load()
-    btnSound.current.load()
-    successSound.current.load()
-    errorSound.current.load()
+    resetSound.current.load();
+    cellSound.current.load();
+    btnSound.current.load();
+    successSound.current.load();
+    errorSound.current.load();
+    celebrateSound.current.load();
 
     backgroundMusic.current.volume = 0.1;
     backgroundMusic.current.loop = true;
@@ -350,6 +427,27 @@ const TicTacToe = () => {
               <Input
                 value={currAns}
                 onChange={(e) => setCurrAns(e.target.value)}
+                onKeyDown={(e) => {
+                  if (
+                    !/[0-9]/.test(e.key) &&
+                    e.key !== "Backspace" &&
+                    e.key !== "Delete" &&
+                    e.key !== "ArrowLeft" &&
+                    e.key !== "ArrowRight" &&
+                    e.key !== "Enter"
+                  ) {
+                    e.preventDefault();
+                  }
+
+                  if (e.key === "Enter") {
+                    handleSubmitAns(modalInfo.num1, modalInfo.num2, e.target.value);
+                  }
+                }}
+              />
+              <Button
+                colorScheme="teal"
+                onClick={startListening}
+                isLoading={isListening}
               />
             </div>
             <div className="Modal__ansbtn">
@@ -371,7 +469,11 @@ const TicTacToe = () => {
               >
                 Visual Learning
               </Button>
-              <Button colorScheme="pink" variant={"outline"} onClick={handleAddModalOpen}>
+              <Button
+                colorScheme="pink"
+                variant={"outline"}
+                onClick={handleAddModalOpen}
+              >
                 Addition Method
               </Button>
             </div>
@@ -387,12 +489,12 @@ const TicTacToe = () => {
         num2={modalInfo.num2}
       />
 
-      <AdditionMethodModal 
+      <AdditionMethodModal
         isOpen={isAddModalOpen}
         onOpen={onAddModalOpen}
         onClose={onAddModalClose}
         num1={modalInfo.num1}
-        num2={modalInfo.num2} 
+        num2={modalInfo.num2}
       />
     </div>
   );
