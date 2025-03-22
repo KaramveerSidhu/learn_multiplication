@@ -9,12 +9,24 @@
     {
       "src": "staticfiles/**/*",
       "use": "@vercel/static"
+    },
+    {
+      "src": "frontend/build/**/*",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/static/(.*)",
       "dest": "/staticfiles/$1"
+    },
+    {
+      "src": "/icons/(.*)",
+      "dest": "/frontend/build/icons/$1"
+    },
+    {
+      "src": "/sounds/(.*)",
+      "dest": "/frontend/build/sounds/$1"
     },
     {
       "src": "/(.*)",
