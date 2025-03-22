@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./TicTacToe.css";
 import { Button } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
@@ -17,6 +17,7 @@ import {
 import { useToast } from "@chakra-ui/react";
 import VisualLearningModal from "./VisualLearningModal";
 import AdditionMethodModal from "./AdditionMethodModal";
+import Speaker from "./Speaker";
 
 const Cell = ({ num, onClick: onCellClick, cells, question }) => {
   const cellValue = cells[num];
@@ -49,6 +50,7 @@ const TicTacToe = () => {
   const [isError, setIsError] = useState(false);
   const [modalInfo, setModalInfo] = useState({});
   const [currAns, setCurrAns] = useState("");
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -61,6 +63,13 @@ const TicTacToe = () => {
   } = useDisclosure();
 
   const toast = useToast();
+
+  const resetSound = useRef(new Audio("/sounds/reset.mp3"));
+  const cellSound = useRef(new Audio("/sounds/cell.mp3"));
+  const btnSound = useRef(new Audio("/sounds/button.mp3"));
+  const successSound = useRef(new Audio("/sounds/success.mp3"));
+  const errorSound = useRef(new Audio("/sounds/error.mp3"));
+  const backgroundMusic = useRef(new Audio("/sounds/background.mp3"))
 
   const checkwinner = (arr) => {
     let combos = {
@@ -97,6 +106,8 @@ const TicTacToe = () => {
   };
 
   const handleCellClick = (cellNum, num1, num2) => {
+    cellSound.current.play();
+
     if (winner || cells[cellNum] !== "") return;
 
     setModalInfo({ cellNum, num1, num2 });
@@ -120,6 +131,8 @@ const TicTacToe = () => {
   };
 
   const handleReset = () => {
+    resetSound.current.play();
+
     setWinner();
     setIsDraw(false);
     setCells(Array(9).fill(""));
@@ -137,9 +150,9 @@ const TicTacToe = () => {
 
     currAns = parseInt(currAns);
     const isCorrect = num1 * num2 === currAns;
-    console.log(isCorrect);
 
     if (isCorrect) {
+      successSound.current.play();
       toast({
         title: "Success!",
         description: "Your answer is correct. You have claimed this box.",
@@ -152,6 +165,7 @@ const TicTacToe = () => {
       handleModalClose();
       handleCellClaim(modalInfo.cellNum);
     } else {
+      errorSound.current.play();
       toast({
         title: "Incorrect Answer",
         description: "Please try again.",
@@ -169,10 +183,12 @@ const TicTacToe = () => {
   };
 
   const handleVisualModalOpen = () => {
+    btnSound.current.play();
     onVisualModalOpen();
   };
 
   const handleAddModalOpen = () => {
+    btnSound.current.play();
     onAddModalOpen();
   };
 
@@ -182,14 +198,11 @@ const TicTacToe = () => {
       if (isError) setIsError(false);
       if (!isLoading) setIsLoading(true);
 
-      console.log("SERVER", process.env.REACT_APP_API_SERVER)
-
       const response = await fetch(
         `${process.env.REACT_APP_API_SERVER}/api/generate-questions/`
       );
       const data = await response.json();
 
-      console.log(data.questions);
       setQuestions(data.questions);
       setIsLoading(false);
     } catch (error) {
@@ -199,8 +212,40 @@ const TicTacToe = () => {
     }
   };
 
+  const toggleMusic = () => {
+    if (isMusicPlaying) {
+      backgroundMusic.current.pause();
+    } else {
+      backgroundMusic.current.volume = 0.1;
+      backgroundMusic.current.loop = true;
+      backgroundMusic.current.play().catch((error) => {
+        console.error("Error resuming background music:", error);
+      });
+    }
+    setIsMusicPlaying(!isMusicPlaying);
+  };
+
   useEffect(() => {
     fetchQuestions();
+  }, []);
+
+  useEffect(() => {
+    resetSound.current.load()
+    cellSound.current.load()
+    btnSound.current.load()
+    successSound.current.load()
+    errorSound.current.load()
+
+    backgroundMusic.current.volume = 0.1;
+    backgroundMusic.current.loop = true;
+    // backgroundMusic.current.play().catch((error) => {
+    //   console.error("Error playing background music:", error);
+    // });
+
+    return () => {
+      backgroundMusic.current.pause();
+      backgroundMusic.current.currentTime = 0;
+    };
   }, []);
 
   if (isLoading)
@@ -214,6 +259,8 @@ const TicTacToe = () => {
 
   return (
     <div className="TicTacToe__container">
+      <Speaker onClick={toggleMusic} isMusicPlaying={isMusicPlaying} />
+
       <div className={`winner ${winner || isDraw ? "show" : ""}`}>
         {winner ? `Winner is: ${winner}` : isDraw ? "Its a draw" : ""}
       </div>
