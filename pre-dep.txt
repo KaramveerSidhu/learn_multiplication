@@ -12,3 +12,5 @@ npm start
 Ensure that the .env file is present in the frontend and has the value of
 REACT_APP_API_SERVER = http://127.0.0.1:8080
 
+Finally, you can just npm run build in the frontend.
+The url can be accessed the home server of django. so fe app needs not be running.
