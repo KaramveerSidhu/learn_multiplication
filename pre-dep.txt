@@ -1,1 +1,14 @@
 python manage.py collectstatic
+
+# Robo
+
+python3 manage.py runserver 127.0.0.1:8080 
+
+Open new terminal window
+
+cd frontend
+npm start
+
+Ensure that the .env file is present in the frontend and has the value of
+REACT_APP_API_SERVER = http://127.0.0.1:8080
+

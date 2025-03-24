@@ -55,6 +55,8 @@ const TicTacToe = () => {
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [isListening, setIsListening] = useState(false);
 
+  const hasRun = useRef(false);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isVisualModalOpen,
@@ -106,6 +108,11 @@ const TicTacToe = () => {
           arr[pattern[1]] === arr[pattern[2]]
         ) {
           setWinner(arr[pattern[0]]);
+          fetch(
+            `${process.env.REACT_APP_API_SERVER}/api/winner/?player=${arr[pattern[0]]}`
+          ).catch (err => {
+            console.error("Error! Unable to speak the winner player:robot", err);
+          }) 
           celebrateSound.current.play();
         }
       });
@@ -119,7 +126,8 @@ const TicTacToe = () => {
 
     setModalInfo({ cellNum, num1, num2 });
     onOpen();
-    speakQuestion(num1, num2);
+    // speakQuestion(num1, num2);
+    robotSpeakQuestion(num1, num2);
   };
 
   const handleCellClaim = (cellNum) => {
@@ -170,10 +178,23 @@ const TicTacToe = () => {
         position: "top-right",
       });
 
+      fetch(
+        `${process.env.REACT_APP_API_SERVER}/api/correct-ans/?num1=${num1}&num2=${num2}`
+      ).catch (err => {
+        console.error("Error! Unable to speak correct ans:robot", err);
+      })
+
       handleModalClose();
       handleCellClaim(modalInfo.cellNum);
     } else {
       errorSound.current.play();
+
+      fetch(
+        `${process.env.REACT_APP_API_SERVER}/api/incorrect-ans/?num1=${currAns}`
+      ).catch (err => {
+        console.error("Error! Unable to speak incorrect ans:robot", err);
+      })
+
       toast({
         title: "Incorrect Answer",
         description: "Please try again.",
@@ -201,20 +222,14 @@ const TicTacToe = () => {
     onAddModalOpen();
   };
 
-  const speakQuestion = (num1, num2) => {
-    if (!window.speechSynthesis) {
-      console.error("Speech Synthesis API is not supported in this browser.");
-      return;
-    }
-
-    const utterance = new SpeechSynthesisUtterance(
-      `What is ${num1} times ${num2}?`
-    );
-    utterance.lang = "en-US";
-    utterance.rate = 1;
-    utterance.pitch = 1;
-    window.speechSynthesis.speak(utterance);
-  };
+  const robotSpeakQuestion = (num1, num2) => {
+    fetch(
+      `${process.env.REACT_APP_API_SERVER}/api/dictate-question/?num1=${num1}&num2=${num2}`
+    ).catch (err => {
+      console.error("Error! Unable to speak question:robot", err);
+    }) 
+      
+  }
 
   const startListening = () => {
     if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
@@ -281,6 +296,10 @@ const TicTacToe = () => {
 
       setQuestions(data.questions);
       setIsLoading(false);
+
+      fetch(
+        `${process.env.REACT_APP_API_SERVER}/api/board-ready`
+      );
     } catch (error) {
       console.error("Error fetching questions:", error);
       setIsError(true);
@@ -302,7 +321,11 @@ const TicTacToe = () => {
   };
 
   useEffect(() => {
-    fetchQuestions();
+    if (hasRun.current) return;
+
+    hasRun.current = true;
+
+    fetchQuestions()
   }, []);
 
   useEffect(() => {
@@ -324,6 +347,16 @@ const TicTacToe = () => {
       backgroundMusic.current.currentTime = 0;
     };
   }, []);
+
+  useEffect(() => {
+    if(isDraw === true) {
+      fetch(
+        `${process.env.REACT_APP_API_SERVER}/api/isdraw`
+      ).catch (err => {
+        console.error("Error! Unable to speak game is draw:robot", err);
+      }) 
+    }
+  }, [isDraw])
 
   if (isLoading)
     return (
@@ -444,11 +477,11 @@ const TicTacToe = () => {
                   }
                 }}
               />
-              <Button
+              {/* <Button
                 colorScheme="teal"
                 onClick={startListening}
                 isLoading={isListening}
-              />
+              /> */}
             </div>
             <div className="Modal__ansbtn">
               <Button
