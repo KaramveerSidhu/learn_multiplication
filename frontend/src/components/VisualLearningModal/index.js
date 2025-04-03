@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -16,7 +16,7 @@ const VisualLearningModal = ({ isOpen, onOpen, onClose, num1, num2 }) => {
   };
 
   return (
-    <Modal size={"2xl"} isOpen={isOpen} onClose={handleModalClose}>
+    <Modal size={"2xl"} isOpen={isOpen} onClose={handleModalClose} onOpen={onOpen}>
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />

@@ -1,0 +1,54 @@
+.welcome-body {
+  font-family: 'Comic Neue', 'Comic Sans MS', 'Segoe UI', Tahoma, Geneva, sans-serif;
+  background-color: #e0f7f5;
+  color: #20b2aa;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  width: 100vw;
+  font-weight: 600;
+}
+
+.welcome-h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #105e5b;
+}
+
+.welcome-instructions {
+  font-size: 1.5rem;
+  line-height: 2;
+  max-width: 800px;
+  background-color: #ffffff;
+  border: 2px solid #20b2aa;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-instruction-item {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.welcome-start-button {
+  margin-top: 20px;
+  font-size: 1.5rem;
+  padding: 10px 30px;
+  background-color: #20b2aa;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Comic Sans MS', sans-serif;
+}
+
+.welcome-start-button:hover {
+  background-color: #105e5b;
+}

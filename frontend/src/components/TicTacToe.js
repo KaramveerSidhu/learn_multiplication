@@ -215,11 +215,17 @@ const TicTacToe = () => {
   const handleVisualModalOpen = () => {
     btnSound.current.play();
     onVisualModalOpen();
+    fetch(
+    `${process.env.REACT_APP_API_SERVER}/api/visual/?num1=${modalInfo.num1}&num2=${modalInfo.num2}`
+    );
   };
 
   const handleAddModalOpen = () => {
     btnSound.current.play();
     onAddModalOpen();
+    fetch(
+      `${process.env.REACT_APP_API_SERVER}/api/addition/?num1=${modalInfo.num1}&num2=${modalInfo.num2}`
+      );
   };
 
   const robotSpeakQuestion = (num1, num2) => {
@@ -516,7 +522,7 @@ const TicTacToe = () => {
 
       <VisualLearningModal
         isOpen={isVisualModalOpen}
-        onOpen={onVisualModalOpen}
+        // onOpen={onVisualLearningModalOpen}
         onClose={onVisualModalClose}
         num1={modalInfo.num1}
         num2={modalInfo.num2}

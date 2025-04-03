@@ -157,3 +157,118 @@ def isdraw(request):
     speech_publisher.publish(dictateMsg)
 
     return JsonResponse({"speech": "isdraw"})
+
+def welcome(request):
+    # Welcome message
+    welcomeMsg = String()
+    welcomeMsg.data = "Welcome!"
+    speech_publisher.publish(welcomeMsg)
+    gesture_publisher.publish("QT/hi")
+    rospy.sleep(5)
+
+    instruction0 = String()
+    instruction0.data = "Let's play tic tac maths"
+    speech_publisher.publish(instruction0)
+    rospy.sleep(3)
+
+    # Instruction 1
+    instruction1 = String()
+    instruction1.data = "The game, is played on, a Tic Tac Toe board."
+    speech_publisher.publish(instruction1)
+    rospy.sleep(5)
+
+    # Instruction 2
+    instruction2 = String()
+    instruction2.data = "To claim a box, you must solve, a multiplication question correctly."
+    speech_publisher.publish(instruction2)
+    rospy.sleep(7)
+
+    # Instruction 3
+    instruction3 = String()
+    instruction3.data = "The first player, to get three boxes in a row, horizontally, vertically, or diagonally, wins!"
+    speech_publisher.publish(instruction3)
+    rospy.sleep(9)
+
+    # Instruction 4
+    instruction4 = String()
+    instruction4.data = "Have fun, and sharpen your multiplication skills!"
+    speech_publisher.publish(instruction4)
+    rospy.sleep(5)
+
+    return JsonResponse({"speech": "instructions dictated"})
+
+def visual(request):
+    num1 = request.GET.get('num1')
+    num2 = request.GET.get('num2')
+    num1 = int(num1)
+    num2 = int(num2)
+
+    # Step 1: Welcome message
+    welcomeMsg = String()
+    welcomeMsg.data = f"Let's learn, multiplication, visually! Now, we will learn {num1} times {num2}."
+    speech_publisher.publish(welcomeMsg)
+    rospy.sleep(9)
+
+    # Step 2: Explain rows
+    rowsMsg = String()
+    rowsMsg.data = f"First, we will create {num1} rows. Each row, represents one group of {num2}."
+    speech_publisher.publish(rowsMsg)
+    gesture_publisher.publish("QT/arm_front")
+    rospy.sleep(9)
+
+    # Step 3: Explain columns
+    columnsMsg = String()
+    columnsMsg.data = f"Next, we will create {num2} columns. Each column, represents one item in each group."
+    speech_publisher.publish(columnsMsg)
+    rospy.sleep(9)
+
+    # Step 4: Explain the grid
+    gridMsg = String()
+    gridMsg.data = f"Now, we will fill the grid, with {num1 * num2} blocks."
+    speech_publisher.publish(gridMsg)
+    rospy.sleep(6)
+
+    # Step 5: Explain counting
+    countingMsg = String()
+    countingMsg.data = f"Finally, count all the blocks in the grid. That will be the answer, to {num1} times {num2}."
+    speech_publisher.publish(countingMsg)
+    rospy.sleep(8)
+
+    return JsonResponse({"speech": "visual learning steps explained"})
+
+def get_ordinal(n):
+        if 10 <= n % 100 <= 20:
+            suffix = "th"
+        else:
+            suffix = {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
+        return f"{n}{suffix}"
+
+def addition(request):
+    num1 = request.GET.get('num1')
+    num2 = request.GET.get('num2')
+    num1 = int(num1)
+    num2 = int(num2)
+
+    welcomeMsg = String()
+    welcomeMsg.data = f"Let's learn, multiplication, using, addition! Now, we will learn, {num1} times {num2}."
+    speech_publisher.publish(welcomeMsg)
+    rospy.sleep(10)
+
+    conceptMsg = String()
+    conceptMsg.data = f"In this case, multiplication, means, adding the number, {num1}, a total of, {num2} times."
+    speech_publisher.publish(conceptMsg)
+    rospy.sleep(9)
+
+    for i in range(1, num2 + 1):
+        ordinal = get_ordinal(i)
+        stepMsg = String()
+        stepMsg.data = f"Step {i}: Add {num1} for the {ordinal} time.."
+        speech_publisher.publish(stepMsg)
+        rospy.sleep(6)
+
+    encourageMsg = String()
+    encourageMsg.data = f"So, you can add, {num1}, {num2} times, to find the answer. You can do it!"
+    speech_publisher.publish(encourageMsg)
+    rospy.sleep(5)
+
+    return JsonResponse({"speech": "addition steps explained"})

@@ -12,4 +12,7 @@ urlpatterns = [
     path('incorrect-ans/', views.incorrect_ans, name='incorrect-ans'),
     path('winner/', views.winner, name='winner'),
     path('isdraw/', views.isdraw, name='isdraw'),
+    path('welcome/', views.welcome, name='welcome'),
+    path('visual/', views.visual, name='visual-learning'),
+    path('addition/', views.addition, name='addition-learning'),
 ]
