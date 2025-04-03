@@ -2,6 +2,8 @@ python manage.py collectstatic
 
 # Robo
 
+source bin/activate ---> use this to activate the virtual env first
+
 python3 manage.py runserver 127.0.0.1:8080 
 
 Open new terminal window
